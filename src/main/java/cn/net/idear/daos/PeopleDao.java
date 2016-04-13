@@ -52,7 +52,18 @@ public class PeopleDao {
   public List<CbPeople> getAll() {
     return entityManager.createQuery("from CbPeople").getResultList();
   }
-  
+
+  /**
+   * Return all the peoples stored in the database.
+   */
+  @SuppressWarnings("unchecked")
+  public List<CbPeople> getPeopleByGivenAmount(int amount) {
+    return entityManager.createQuery("from CbPeople")
+            .setMaxResults(amount)
+            .getResultList();
+  }
+
+
   /**
    * Return the people having the passed id.
    */
@@ -76,5 +87,13 @@ public class PeopleDao {
   // setup on DatabaseConfig class.
   @PersistenceContext
   private EntityManager entityManager;
-  
+
+
+//  public User getByEmail(String email) {
+//    return (User) entityManager.createQuery(
+//            "from User where email = :email")
+//            .setParameter("email", email)
+//            .getSingleResult();
+//  }
+
 } // class CbPeopleDao
