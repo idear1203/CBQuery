@@ -89,11 +89,5 @@ public class PeopleDao {
   private EntityManager entityManager;
 
 
-//  public User getByEmail(String email) {
-//    return (User) entityManager.createQuery(
-//            "from User where email = :email")
-//            .setParameter("email", email)
-//            .getSingleResult();
-//  }
 
 } // class CbPeopleDao

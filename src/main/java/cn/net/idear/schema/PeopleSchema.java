@@ -2,26 +2,60 @@ package cn.net.idear.schema;
 
 import cn.net.idear.daos.PeopleDao;
 import cn.net.idear.models.CbPeople;
-import graphql.schema.*;
-
-import static graphql.Scalars.GraphQLString;
-import static graphql.schema.GraphQLArgument.newArgument;
-import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
-import static graphql.schema.GraphQLObjectType.newObject;
+import com.oembedler.moon.graphql.engine.stereotype.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Created by wangdongwei on 4/13/16.
  */
+@GraphQLSchema
 public class PeopleSchema {
 
-    private PeopleDao peopleDao;
+    @GraphQLSchemaQuery
+    private QueryType queryType;
 
-    private DataFetcher personFetcher = new DataFetcher(){
+    @GraphQLObject
+    @GraphQLDescription("A person in real world.")
+    public static class Person {
+        @GraphQLIgnore
+        private String id;
 
-        @Override
-        public Object get(DataFetchingEnvironment environment) {
+        @GraphQLIgnore
+        private String firstName;
+
+        @GraphQLIgnore
+        private String lastName;
+
+        @GraphQLNonNull
+        @GraphQLField("id")
+        @GraphQLDescription("The id of the human.")
+        public String getId() {
+            return null;
+        }
+
+        @GraphQLField("firstName")
+        @GraphQLDescription("The first name of the human.")
+        public String getFirstName() {
+            return null;
+        }
+
+        @GraphQLField("lastName")
+        @GraphQLDescription("The last name of the human.")
+        public String getLastName() {
+            return null;
+        }
+    }
+
+
+    @GraphQLObject
+    public static class QueryType {
+
+        @Autowired
+        private PeopleDao peopleDao;
+
+        @GraphQLField
+        public CbPeople person(@GraphQLNonNull @GraphQLIn("id") String idStr) {
             CbPeople person;
-            String idStr = environment.getArgument("id");
             try {
                 int id = Integer.parseInt(idStr);
                 person = peopleDao.getById(id);
@@ -31,59 +65,5 @@ public class PeopleSchema {
             }
             return person;
         }
-    };
-
-    public PeopleSchema(PeopleDao peopleDao){
-        this.peopleDao = peopleDao;
     }
-
-    public GraphQLObjectType personType = newObject()
-            .name("Person")
-            .description("A person in real world")
-//            .withInterface(characterInterface)
-            .field(newFieldDefinition()
-                    .name("id")
-                    .description("The id of the person.")
-                    .type(new GraphQLNonNull(GraphQLString))
-                    .build())
-            .field(newFieldDefinition()
-                    .name("objectId")
-                    .description("The object id of the person.")
-                    .type(new GraphQLNonNull(GraphQLString))
-                    .build())
-            .field(newFieldDefinition()
-                    .name("firstName")
-                    .description("The first name of the person.")
-                    .type(GraphQLString)
-                    .build())
-            .field(newFieldDefinition()
-                    .name("lastName")
-                    .description("The last name of the person.")
-                    .type(GraphQLString)
-                    .build())
-            .field(newFieldDefinition()
-                    .name("birthplace")
-                    .description("The birth place of the person.")
-                    .type(GraphQLString)
-                    .build())
-            .build();
-
-    public GraphQLObjectType queryType = newObject()
-            .name("QueryType")
-            .field(newFieldDefinition()
-                    .name("person")
-                    .type(personType)
-                    .argument(newArgument()
-                            .name("id")
-                            .description("id of the person")
-                            .type(new GraphQLNonNull(GraphQLString))
-                            .build())
-                    .dataFetcher(personFetcher)
-                    .build())
-            .build();
-
-
-    public GraphQLSchema peopleSchema = GraphQLSchema.newSchema()
-            .query(queryType)
-            .build();
 }
