@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Class UserController
  */
 @Controller
-@RequestMapping("/graphql")
+@RequestMapping("/people")
 public class CbPeopleController {
 
   /**

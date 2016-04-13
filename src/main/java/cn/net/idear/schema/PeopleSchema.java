@@ -60,7 +60,6 @@ public class PeopleSchema {
                 int id = Integer.parseInt(idStr);
                 person = peopleDao.getById(id);
             }catch (Exception e){
-                e.printStackTrace();
                 return null;
             }
             return person;
