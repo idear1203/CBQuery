@@ -8,75 +8,69 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
-/**
- * This class is used to access data for the CbPeople entity.
- * Repository annotation allows the component scanning support to find and 
- * configure the DAO wihtout any XML configuration and also provide the Spring 
- * exceptiom translation.
- * Since we've setup setPackagesToScan and transaction manager on
- * DatabaseConfig, any bean method annotated with Transactional will cause
- * Spring to magically call begin() and commit() at the start/end of the
- * method. If exception occurs it will also call rollback().
- */
 @Repository
 @Transactional
 public class PeopleDao {
   
-  // ------------------------
-  // PUBLIC METHODS
-  // ------------------------
-  
   /**
-   * Save the people in the database.
+   * Save the person in the database.
    */
-  public void create(CbPeople people) {
-    entityManager.persist(people);
+  public void create(CbPeople person) {
+    entityManager.persist(person);
     return;
   }
   
   /**
-   * Delete the people from the database.
+   * Delete the person from the database.
    */
-  public void delete(CbPeople people) {
-    if (entityManager.contains(people))
-      entityManager.remove(people);
+  public void delete(CbPeople person) {
+    if (entityManager.contains(person))
+      entityManager.remove(person);
     else
-      entityManager.remove(entityManager.merge(people));
+      entityManager.remove(entityManager.merge(person));
     return;
   }
   
   /**
-   * Return all the peoples stored in the database.
+   * Return all the people stored in the database.
    */
   @SuppressWarnings("unchecked")
   public List<CbPeople> getAll() {
     return entityManager.createQuery("from CbPeople").getResultList();
   }
 
+//  /**
+//   * Return all the peoples stored in the database.
+//   */
+//  @SuppressWarnings("unchecked")
+//  public List<CbPeople> getPeopleByLimit(int amount) {
+//    return entityManager.createQuery("from CbPeople")
+//            .setMaxResults(amount)
+//            .getResultList();
+//  }
+
   /**
-   * Return all the peoples stored in the database.
+   * Return the person having the passed object id.
    */
-  @SuppressWarnings("unchecked")
-  public List<CbPeople> getPeopleByGivenAmount(int amount) {
-    return entityManager.createQuery("from CbPeople")
-            .setMaxResults(amount)
-            .getResultList();
+  public CbPeople getByObjectId(String objectId) {
+    return (CbPeople) entityManager.createQuery(
+            "from CbPeople where objectId = :objectId")
+            .setParameter("objectId", objectId)
+            .getSingleResult();
   }
 
-
   /**
-   * Return the people having the passed id.
+   * Return the person having the passed id.
    */
   public CbPeople getById(long id) {
     return entityManager.find(CbPeople.class, id);
   }
 
   /**
-   * Update the passed people in the database.
+   * Update the passed person in the database.
    */
   public void update(CbPeople people) {
     entityManager.merge(people);
-    return;
   }
 
   // ------------------------
@@ -87,7 +81,5 @@ public class PeopleDao {
   // setup on DatabaseConfig class.
   @PersistenceContext
   private EntityManager entityManager;
-
-
 
 } // class CbPeopleDao

@@ -14,34 +14,32 @@ public class CrunchBaseSchema {
     @GraphQLSchemaQuery
     private QueryType queryType;
 
+
+    /**
+     * type Query {
+     *  person(id: String): People
+     *  person(objectId: String): People
+     * }
+     */
+
     @GraphQLObject
     public static class QueryType {
 
         @Autowired
         private PeopleDao peopleDao;
 
-
-        /**
-         * query personNameQuery {
-         *     person(id: "1") {
-         *       name
-         *     }
-         * }
-         */
         @GraphQLField
-        public CbPeople person(@GraphQLNonNull @GraphQLIn("id") String idStr) {
-            CbPeople person;
+        public CbPeople person(@GraphQLIn("id") String id,
+                             @GraphQLIn(value = "objectId") String objectId) {
+            CbPeople person = null;
             try {
-                int id = Integer.parseInt(idStr);
-                person = peopleDao.getById(id);
+                if (id != null)
+                    person = peopleDao.getById(Long.parseLong(id));
+                else if (objectId != null)
+                    person = peopleDao.getByObjectId(objectId);
             }catch (Exception e){
-                return null;
             }
             return person;
         }
-
-        /**
-         * select  institution ,count(institution) from (( cb_degrees d inner join cb_relationships r on d.object_id=r.person_object_id) inner join cb_funding_rounds f on r.relationship_object_id=f.object_id )where funding_round_code in ('c','d','e','f','g') or (funding_round_code = 'b' and is_last_round = '0') group by institution order by count(institution) desc limit 10;
-         */
     }
 }
