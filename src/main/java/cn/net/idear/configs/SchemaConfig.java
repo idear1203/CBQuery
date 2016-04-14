@@ -1,6 +1,6 @@
 package cn.net.idear.configs;
 
-import cn.net.idear.schema.PeopleSchema;
+import cn.net.idear.schema.CrunchBaseSchema;
 import com.oembedler.moon.graphql.GraphQLSchemaBeanFactory;
 import com.oembedler.moon.graphql.SpringGraphQLSchemaBeanFactory;
 import com.oembedler.moon.graphql.engine.GraphQLSchemaBuilder;
@@ -39,6 +39,6 @@ public class SchemaConfig {
     // use as is
     @Bean
     public GraphQLSchemaHolder graphQLSchemaHolder() {
-        return graphQLSchemaBuilder().buildSchema(PeopleSchema.class);
+        return graphQLSchemaBuilder().buildSchema(CrunchBaseSchema.class);
     }
 }

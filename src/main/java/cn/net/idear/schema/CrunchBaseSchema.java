@@ -9,43 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Created by wangdongwei on 4/13/16.
  */
 @GraphQLSchema
-public class PeopleSchema {
+public class CrunchBaseSchema {
 
     @GraphQLSchemaQuery
     private QueryType queryType;
-
-    @GraphQLObject
-    @GraphQLDescription("A person in real world.")
-    public static class Person {
-        @GraphQLIgnore
-        private String id;
-
-        @GraphQLIgnore
-        private String firstName;
-
-        @GraphQLIgnore
-        private String lastName;
-
-        @GraphQLNonNull
-        @GraphQLField("id")
-        @GraphQLDescription("The id of the human.")
-        public String getId() {
-            return null;
-        }
-
-        @GraphQLField("firstName")
-        @GraphQLDescription("The first name of the human.")
-        public String getFirstName() {
-            return null;
-        }
-
-        @GraphQLField("lastName")
-        @GraphQLDescription("The last name of the human.")
-        public String getLastName() {
-            return null;
-        }
-    }
-
 
     @GraphQLObject
     public static class QueryType {
@@ -53,6 +20,14 @@ public class PeopleSchema {
         @Autowired
         private PeopleDao peopleDao;
 
+
+        /**
+         * query personNameQuery {
+         *     person(id: "1") {
+         *       name
+         *     }
+         * }
+         */
         @GraphQLField
         public CbPeople person(@GraphQLNonNull @GraphQLIn("id") String idStr) {
             CbPeople person;
@@ -64,5 +39,9 @@ public class PeopleSchema {
             }
             return person;
         }
+
+        /**
+         * select  institution ,count(institution) from (( cb_degrees d inner join cb_relationships r on d.object_id=r.person_object_id) inner join cb_funding_rounds f on r.relationship_object_id=f.object_id )where funding_round_code in ('c','d','e','f','g') or (funding_round_code = 'b' and is_last_round = '0') group by institution order by count(institution) desc limit 10;
+         */
     }
 }

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Class UserController
  */
 @Controller
-@RequestMapping("/people")
-public class CbPeopleController {
+@RequestMapping("/graphql")
+public class CrunchBaseController {
 
   /**
    * Retrieve the id for the user with the passed email address.

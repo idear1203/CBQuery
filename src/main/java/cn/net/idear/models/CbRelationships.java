@@ -1,11 +1,14 @@
 package cn.net.idear.models;
 
+import com.oembedler.moon.graphql.engine.stereotype.GraphQLObject;
+
 import javax.persistence.*;
 import java.sql.Date;
 
 /**
  * Created by wangdongwei on 4/12/16.
  */
+@GraphQLObject
 @Entity
 @Table(name = "cb_relationships", schema = "cb_data", catalog = "")
 public class CbRelationships {
