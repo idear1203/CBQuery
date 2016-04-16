@@ -1,14 +1,15 @@
 package cn.net.idear.schema;
 
-import cn.net.idear.daos.PeopleDao;
+import cn.net.idear.models.CbDegrees;
 import cn.net.idear.models.CbPeople;
+import cn.net.idear.repository.DegreeRepository;
 import cn.net.idear.repository.PeopleRepository;
 import com.oembedler.moon.graphql.engine.stereotype.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by wangdongwei on 4/13/16.
@@ -20,15 +21,42 @@ public class CrunchBaseSchema {
     private QueryType queryType;
 
     @GraphQLObject
-    public static class People{
-        private List<String> schools;
+    public static class Person {
 
-        public List<String> getSchools() {
-            return schools;
+        private long id;
+
+        private long objectId;
+
+        @GraphQLNonNull
+        private String firstName;
+
+        @GraphQLNonNull
+        private String lastName;
+
+        private List<String> institution;
+
+        public List<String> getInstitution() {
+            return institution;
         }
 
-        public void setSchools(List<String> schools) {
-            this.schools = schools;
+        public void setInstitution(List<String> institution) {
+            this.institution = institution;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
         }
     }
 
@@ -57,7 +85,7 @@ public class CrunchBaseSchema {
     @GraphQLObject
     public static class Corporation{
         private List<FundRound> fundRounds;
-        private List<People> staffs;
+        private List<Person> staffs;
 
         public List<FundRound> getFundRounds() {
             return fundRounds;
@@ -67,11 +95,11 @@ public class CrunchBaseSchema {
             this.fundRounds = fundRounds;
         }
 
-        public List<People> getStaffs() {
+        public List<Person> getStaffs() {
             return staffs;
         }
 
-        public void setStaffs(List<People> staffs) {
+        public void setStaffs(List<Person> staffs) {
             this.staffs = staffs;
         }
     }
@@ -89,29 +117,31 @@ public class CrunchBaseSchema {
         @Autowired
         private PeopleRepository peopleRepository;
 
+        @Autowired
+        private DegreeRepository degreeRepository;
+
         @GraphQLField
-        public CbPeople person(@GraphQLIn("id") String id,
-                               @GraphQLIn(value = "objectId") String objectId) {
+        public Person person(@GraphQLIn("id") String id,
+                             @GraphQLIn(value = "objectId") String objectId) {
             try {
+                CbPeople cbPerson = null;
                 if (id != null)
-                    return peopleRepository.getOne(Long.parseLong(id));
+                    cbPerson =  peopleRepository.getOne(Long.parseLong(id));
                 else if (objectId != null)
-                    return peopleRepository.findByObjectId(objectId);
+                    cbPerson =  peopleRepository.findByObjectId(objectId);
+                if (cbPerson != null){
+                    objectId = cbPerson.getObjectId();
+                    List<CbDegrees> degrees = degreeRepository.findByObjectId(objectId);
+                    Person person = new Person();
+                    person.setFirstName(cbPerson.getFirstName());
+                    person.setLastName(cbPerson.getLastName());
+                    person.setInstitution(degrees.stream().map(CbDegrees::getInstitution).collect(Collectors.toList()));
+                    return person;
+                }
             }catch (Exception e){
             }
             return null;
         }
 
-//        @Autowired
-//        private PeopleDao peopleDao;
-//
-////        @GraphQLField
-////        public Object corporation(@GraphQLIn("code") String roundCode){
-////            List<Test> a = new ArrayList<Test>();
-////            a.add(new Test(1));
-////            for (CbFundingRounds fundingRounds : fundingRoundsDao.getAll()){
-////            }
-////        }
-//
     }
 }

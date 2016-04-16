@@ -15,7 +15,7 @@ public class CbDegrees {
     private long id;
     private String objectId;
     private String degreeType;
-    private Date subject;
+    private String subject;
     private String institution;
     private Date graduatedAt;
     private String createdAt;
@@ -53,11 +53,11 @@ public class CbDegrees {
 
     @Basic
     @Column(name = "subject")
-    public Date getSubject() {
+    public String getSubject() {
         return subject;
     }
 
-    public void setSubject(Date subject) {
+    public void setSubject(String subject) {
         this.subject = subject;
     }
 
