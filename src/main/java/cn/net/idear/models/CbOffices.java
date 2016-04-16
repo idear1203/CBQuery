@@ -9,7 +9,6 @@ import java.sql.Date;
 /**
  * Created by wangdongwei on 4/12/16.
  */
-@GraphQLObject
 @Entity
 @Table(name = "cb_offices", schema = "cb_data", catalog = "")
 public class CbOffices {

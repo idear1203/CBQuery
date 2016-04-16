@@ -18,14 +18,14 @@ public class CbFundingRounds {
     private Date fundedAt;
     private String fundingRoundType;
     private String fundingRoundCode;
-    private Integer raisedAmountUsd;
+    private Long raisedAmountUsd;
     private Integer raisedAmount;
     private String raisedCurrencyCode;
-    private Integer preMoneyValuationUsd;
-    private Integer preMoneyValuation;
+    private Long preMoneyValuationUsd;
+    private Long preMoneyValuation;
     private String preMoneyCurrencyCode;
-    private Integer postMoneyValuationUsd;
-    private Integer postMoneyValuation;
+    private Long postMoneyValuationUsd;
+    private Long postMoneyValuation;
     private String postMoneyCurrencyCode;
     private Integer participants;
     private Integer isFirstRound;
@@ -98,11 +98,11 @@ public class CbFundingRounds {
 
     @Basic
     @Column(name = "raised_amount_usd")
-    public Integer getRaisedAmountUsd() {
+    public Long getRaisedAmountUsd() {
         return raisedAmountUsd;
     }
 
-    public void setRaisedAmountUsd(Integer raisedAmountUsd) {
+    public void setRaisedAmountUsd(Long raisedAmountUsd) {
         this.raisedAmountUsd = raisedAmountUsd;
     }
 
@@ -128,21 +128,21 @@ public class CbFundingRounds {
 
     @Basic
     @Column(name = "pre_money_valuation_usd")
-    public Integer getPreMoneyValuationUsd() {
+    public Long getPreMoneyValuationUsd() {
         return preMoneyValuationUsd;
     }
 
-    public void setPreMoneyValuationUsd(Integer preMoneyValuationUsd) {
+    public void setPreMoneyValuationUsd(Long preMoneyValuationUsd) {
         this.preMoneyValuationUsd = preMoneyValuationUsd;
     }
 
     @Basic
     @Column(name = "pre_money_valuation")
-    public Integer getPreMoneyValuation() {
+    public Long getPreMoneyValuation() {
         return preMoneyValuation;
     }
 
-    public void setPreMoneyValuation(Integer preMoneyValuation) {
+    public void setPreMoneyValuation(Long preMoneyValuation) {
         this.preMoneyValuation = preMoneyValuation;
     }
 
@@ -158,21 +158,21 @@ public class CbFundingRounds {
 
     @Basic
     @Column(name = "post_money_valuation_usd")
-    public Integer getPostMoneyValuationUsd() {
+    public Long getPostMoneyValuationUsd() {
         return postMoneyValuationUsd;
     }
 
-    public void setPostMoneyValuationUsd(Integer postMoneyValuationUsd) {
+    public void setPostMoneyValuationUsd(Long postMoneyValuationUsd) {
         this.postMoneyValuationUsd = postMoneyValuationUsd;
     }
 
     @Basic
     @Column(name = "post_money_valuation")
-    public Integer getPostMoneyValuation() {
+    public Long getPostMoneyValuation() {
         return postMoneyValuation;
     }
 
-    public void setPostMoneyValuation(Integer postMoneyValuation) {
+    public void setPostMoneyValuation(Long postMoneyValuation) {
         this.postMoneyValuation = postMoneyValuation;
     }
 

@@ -9,27 +9,14 @@ import javax.persistence.*;
 /**
  * Created by wangdongwei on 4/12/16.
  */
-@GraphQLObject
 @Entity
 @Table(name = "cb_people", schema = "cb_data", catalog = "")
 public class CbPeople {
-
-    @GraphQLNonNull
     private long id;
-
-    @GraphQLNonNull
     private String objectId;
-
-    @GraphQLNonNull
     private String firstName;
-
-    @GraphQLIgnore
     private String lastName;
-
-    @GraphQLIgnore
     private String birthplace;
-
-    @GraphQLIgnore
     private String affiliationName;
 
     @Id

@@ -8,7 +8,6 @@ import java.sql.Date;
 /**
  * Created by wangdongwei on 4/12/16.
  */
-@GraphQLObject
 @Entity
 @Table(name = "cb_milestones", schema = "cb_data", catalog = "")
 public class CbMilestones {
